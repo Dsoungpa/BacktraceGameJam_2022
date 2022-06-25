@@ -7,9 +7,12 @@ public class PlatformSpawner : MonoBehaviour
     public GameObject platformpattern1Prefab;
     public GameObject platformpattern2Prefab;
     public GameObject platformpattern3Prefab;
+    public GameObject platformpattern4Prefab;
+
+    public GameObject player;
     
     private int platformCount = 8;
-    private float platformspawnHeight = 0f;
+    private float platformspawnHeight = -1f;
 
     // Start is called before the first frame update
     void Start()
@@ -23,6 +26,9 @@ public class PlatformSpawner : MonoBehaviour
     void Update()
     {
         print(platformspawnHeight);
+        if(player.transform.position.y > platformspawnHeight - 30){
+            spawnPlatforms();
+        }
     }   
 
     // Function for spawning platforms
@@ -33,7 +39,9 @@ public class PlatformSpawner : MonoBehaviour
             // We roll a dice to choose the pattern that will be instantiated
             int patternChoice = Random.Range(1,4);
 
-            switch(patternChoice){
+            // if 100m - 1000m
+            if(platformspawnHeight < 58f){
+                switch(patternChoice){
                 case 1:
                     // pattern 1
                     Instantiate(platformpattern1Prefab, spawnPosition, Quaternion.identity);
@@ -49,7 +57,18 @@ public class PlatformSpawner : MonoBehaviour
                     Instantiate(platformpattern3Prefab, spawnPosition, Quaternion.identity);
                     platformspawnHeight += 8f;
                     break;
+                }
             }
+            // milestone 2
+            else if(platformspawnHeight < 1000f){
+                print("Spawned Second Pattern Milestone");
+                Instantiate(platformpattern4Prefab, spawnPosition, Quaternion.identity);
+                platformspawnHeight += 8f;
+
+            }
+            
+
+            // if ()
         }
     }
 }

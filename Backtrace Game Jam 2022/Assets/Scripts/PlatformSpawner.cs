@@ -25,7 +25,7 @@ public class PlatformSpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        print(platformspawnHeight);
+        // print(platformspawnHeight);
         if(player.transform.position.y > platformspawnHeight - 30){
             spawnPlatforms();
         }
@@ -61,7 +61,7 @@ public class PlatformSpawner : MonoBehaviour
             }
             // milestone 2
             else if(platformspawnHeight < 1000f){
-                print("Spawned Second Pattern Milestone");
+                // print("Spawned Second Pattern Milestone");
                 Instantiate(platformpattern4Prefab, spawnPosition, Quaternion.identity);
                 platformspawnHeight += 8f;
 

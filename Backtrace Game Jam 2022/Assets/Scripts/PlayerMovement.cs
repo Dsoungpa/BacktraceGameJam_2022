@@ -13,7 +13,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("General")]
     [SerializeField] private LayerMask platformLayerMask;
     [SerializeField] private bool isGrounded;
-    [SerializeField] private float horizontalInput;
+    [SerializeField] public float horizontalInput;
 
     [Header("Movement")]
     [SerializeField] private float moveSpeed = 15f;
@@ -34,6 +34,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float extraJumpsCounter;
     private bool jumpRequest = false;
 
+    //referencetoanimations
+    public PlayerAnimations Anims;
 
 
     // Start is called before the first frame update
@@ -48,12 +50,14 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         float horizontalInput = Input.GetAxisRaw("Horizontal");
+        
         movementForce = new Vector2(horizontalInput, 0);
 
         // coyote time
         if (IsGrounded()) {
             extraJumpsCounter = extraJumps;
             coyoteTimeCounter = coyoteTime;
+            Anims.animator.SetBool("IsJumping",false);
         }else {
             coyoteTimeCounter -= Time.deltaTime;
         }
@@ -96,6 +100,7 @@ public class PlayerMovement : MonoBehaviour
         }
         rb.velocity = new Vector2(rb.velocity.x, 0);
         rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+        Anims.animator.SetBool("IsJumping",true);
     }
 
     private void ApplyGroundLinearDrag() {

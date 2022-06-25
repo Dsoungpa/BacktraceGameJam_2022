@@ -5,65 +5,83 @@ using UnityEngine;
 public class PlatformGeneration : MonoBehaviour
 {
     [SerializeField] private GameObject regularPlatform;
+    [SerializeField] private Transform newPlatformSpawnTrigger;
+    [SerializeField] private float newPlatformSpawnTriggerShift = 8.2f;
 
     private int[] spawnPositions = new int[] {-1, 0, 1}; // -1 = left, 0 = center, 1 = right
-    private int[] weightedColumns = new int[] {1, 2, 2, 2, 3, 3};
-    private Vector2 previousPlatformPosition;
+
+    private int[] weightedCenter = new int[] {-1, -1, -1, 0, 1, 1, 1}; //previous column was center
+    private int[] weightedLeft = new int[] {-1, 0, 0, 0, 0, 1, 1}; //previous column was left
+    private int[] weightedRight = new int[] {-1, -1, 0, 0, 0, 0, 1}; //previous column was right
+
+    private Vector2 previousPlatformPosition = new Vector2(0, 0);
+    private Vector2 newPlatform;
     // Start is called before the first frame update
     void Start()
     {
-        Vector2 firstPlatformPosition = CalculatePosition(new Vector2(0, 3f));
-        Instantiate(regularPlatform, firstPlatformPosition, Quaternion.identity);
-        previousPlatformPosition = firstPlatformPosition;
-
-        SpawnInitialPlatforms();
+        SpawnPlatform();
+        SpawnPlatformSets(5);
     }
 
     // Update is called once per frame
     void Update()
     {
-        
-    }
-
-    private void SpawnPlatforms() {
-        
-    }
-//////MAKE A COLUMN CHECKER: something that decides what column the next platform should be at.
-//////add variations after.
-    private void SpawnInitialPlatforms() {
-        int initialPlatformLimit = 6;
-
-        for (int i = 0; i < initialPlatformLimit; i++) {
-            Vector2 newPlatform = CalculatePosition(new Vector2(0, previousPlatformPosition.y));
+        if (previousPlatformPosition.y - newPlatformSpawnTrigger.position.y < newPlatformSpawnTriggerShift) { //LOOK INTO THIS
+            SpawnPlatformSets(10);
         }
     }
 
-    private Vector2 CalculatePosition(Vector2 platformPosition) {
-        int column = spawnPositions[Random.Range(0, spawnPositions.Length - 1)];
-        print(column);
+    private void SpawnPlatform() {
+        Vector2 newPlatform = CalculatePosition(previousPlatformPosition);
+        Instantiate(regularPlatform, newPlatform, Quaternion.identity);
+        previousPlatformPosition = newPlatform;
+    }
+
+    private void SpawnPlatformSets(int platformLimit) {
+        for (int i = 0; i < platformLimit; i++) {
+            SpawnPlatform();
+        }
+    }
+
+    private Vector2 CalculatePosition(Vector2 previousPlatform) {
+        int column;
+        if (ColumnChecker(previousPlatform) < 0) { //left (-1)
+            column = weightedLeft[Random.Range(0, weightedLeft.Length - 1)];
+        }else if (ColumnChecker(previousPlatform) > 0) { //right (1)
+            column = weightedRight[Random.Range(0, weightedRight.Length - 1)];
+        }else { //center (0)
+            column = weightedCenter[Random.Range(0, weightedCenter.Length - 1)];
+        }
+
+        newPlatform = new Vector2(0, 0);
 
         switch(column) {
             case -1:
-                platformPosition += new Vector2(-2.5f, 0);
+                newPlatform += new Vector2(-2.5f, 0);
                 break;
             case 1:
-                platformPosition += new Vector2(2.5f, 0);
+                newPlatform += new Vector2(2.5f, 0);
                 break;
         }
-        print(platformPosition);
 
-        float randomShiftX = Random.Range(-0.5f, -0.5f);
-        float randomShiftY = Random.Range(-0.25f, 0.25f);
+        float randomShiftX = Random.value - 0.5f;
+        float randomShiftY = Random.value - 0.25f;
 
-        platformPosition += new Vector2(randomShiftX, 0f);
-        platformPosition += new Vector2(0f, randomShiftY);
+        newPlatform += new Vector2(randomShiftX, 0f);
+        newPlatform += new Vector2(0f, randomShiftY);
 
-        print(platformPosition);
+        newPlatform += new Vector2(0, previousPlatform.y + 3f);
 
-        return platformPosition;
+        return newPlatform;
     }
 
-    // private int ColumnChecker(Vector2 platformPosition) {
-    //     if (platformPosition >= -2.75f && platformPosition <)
-    // }
+    private int ColumnChecker(Vector2 platformPosition) {
+        if (platformPosition.x < -0.5f) {
+            return -1;
+        }else if (platformPosition.x > 0.5f) {
+            return 1;
+        }else {
+            return 0;
+        }
+    }
 }

@@ -34,6 +34,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float jumpBufferCounter;
     [SerializeField] private float extraJumps = 0;
     [SerializeField] private float extraJumpsCounter;
+    [SerializeField] private float jumpcooldownTimer = 5f;
+    [SerializeField] private bool offCooldown;
+
     private bool jumpRequest = false;
 
     [Header("Stamina")]
@@ -54,6 +57,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
     void Start(){
+        offCooldown = true;
         currentHealth = maxHealth;
         healthBar.SetMaxHealth(maxHealth);
         StartCoroutine(TakeHealthConstantly());
@@ -68,7 +72,9 @@ public class PlayerMovement : MonoBehaviour
 
         // coyote time
         if (IsGrounded()) {
-            extraJumpsCounter = extraJumps;
+            if(offCooldown){
+                extraJumpsCounter = extraJumps;
+            }
             coyoteTimeCounter = coyoteTime;
             Anims.animator.SetBool("IsJumping",false);
         }else {
@@ -108,8 +114,9 @@ public class PlayerMovement : MonoBehaviour
     }
 
     void Jump() {
-        if (!IsGrounded()) {
+        if (!IsGrounded()){
             extraJumpsCounter -= 1;
+            StartCoroutine(JumpCooldown());
         }
         rb.velocity = new Vector2(rb.velocity.x, 0);
         rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
@@ -167,7 +174,11 @@ public class PlayerMovement : MonoBehaviour
             currHealth -= staminaOverTime;
             healthBar.SetHealth(currHealth);
         }
-        
+    }
 
+    IEnumerator JumpCooldown() {
+        offCooldown = false;
+        yield return new WaitForSeconds(jumpcooldownTimer);
+        offCooldown = true;
     }
 }

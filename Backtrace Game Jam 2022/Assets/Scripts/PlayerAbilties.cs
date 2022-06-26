@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerAbilties : MonoBehaviour
 {
     [SerializeField] private bool offCooldown;
-    [SerializeField] private float cooldownTimer;
+    [SerializeField] private float cooldownTimer = 5f;
     [SerializeField] private GameObject emergencyBlock;
     [SerializeField] private HealthBarScript healthBar;
     [SerializeField] private float damageAmount = 20f;

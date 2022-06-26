@@ -9,6 +9,7 @@ public class PlatformGeneration : MonoBehaviour
     [SerializeField] private GameObject icyPlatform;
     [SerializeField] private GameObject rockyPlatform;
     [SerializeField] private GameObject warden;
+    [SerializeField] private GameObject fire;
     [SerializeField] private Transform newPlatformSpawnTrigger;
     [SerializeField] private float newPlatformSpawnTriggerShift = 8.2f;
     [SerializeField] private float wardenSpawnDelay = 50f;
@@ -22,6 +23,8 @@ public class PlatformGeneration : MonoBehaviour
     private int[] weightedCenter = new int[] {-1, -1, -1, 0, 1, 1, 1}; //previous column was center
     private int[] weightedLeft = new int[] {-1, 0, 0, 0, 0, 1, 1}; //previous column was left
     private int[] weightedRight = new int[] {-1, -1, 0, 0, 0, 0, 1}; //previous column was right
+
+    [SerializeField] private float fireChance = .25f;
 
     private Vector2 previousPlatformPosition = new Vector2(0, 0);
     private Vector2 newPlatform;
@@ -77,6 +80,10 @@ public class PlatformGeneration : MonoBehaviour
 
     private void SpawnPlatform() {
         Vector2 newPlatform = CalculatePosition(previousPlatformPosition);
+        Vector2 fireOffset = new Vector2(0f, .5f);
+        if(Random.value <= fireChance){
+            Instantiate(fire, newPlatform + fireOffset, Quaternion.identity);
+        }
         Instantiate(ChoosePlatformTypes(), newPlatform, Quaternion.identity);
         previousPlatformPosition = newPlatform;
     }

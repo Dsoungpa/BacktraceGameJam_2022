@@ -166,7 +166,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &188771984
 GameObject:
@@ -616,7 +616,7 @@ Transform:
   m_Children:
   - {fileID: 1508487056}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &519420033
 MonoBehaviour:
@@ -633,7 +633,6 @@ MonoBehaviour:
   target: {fileID: 891130273}
   background1: {fileID: 0}
   background2: {fileID: 0}
-  size: 0
 --- !u!1 &553432358
 GameObject:
   m_ObjectHideFlags: 0
@@ -643,7 +642,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 553432360}
-  - component: {fileID: 553432359}
   - component: {fileID: 553432361}
   m_Layer: 0
   m_Name: GameManager
@@ -652,23 +650,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &553432359
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 553432358}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 930e03794b1774a419d4359a09d17e5d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  platformpattern1Prefab: {fileID: 3191440329405882457, guid: 94a66b9a49cb28c4a9d4e4d7cc1d2ade, type: 3}
-  platformpattern2Prefab: {fileID: 2328799102240603021, guid: cfba1719865073d409a0d5799dbee24f, type: 3}
-  platformpattern3Prefab: {fileID: 2587383733408933518, guid: 7752cd4fd1e0793458792cf412e94a14, type: 3}
-  platformpattern4Prefab: {fileID: 5664633719063016002, guid: 5db44c9c225a51e4db8dddbd6fc82d28, type: 3}
-  player: {fileID: 891130270}
 --- !u!4 &553432360
 Transform:
   m_ObjectHideFlags: 0
@@ -682,7 +663,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &553432361
 MonoBehaviour:
@@ -697,8 +678,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   regularPlatform: {fileID: 7685874032471200940, guid: 9af1c710017eb184f93cddfc88d0565a, type: 3}
+  warden: {fileID: 4648228186041049426, guid: 4748697d8aa4a4e479e853dde3a3b1bd, type: 3}
   newPlatformSpawnTrigger: {fileID: 519420032}
   newPlatformSpawnTriggerShift: 8.2
+  wardenSpawnDelay: 25
+  wardenChaseSpeed: 5
 --- !u!1 &771323480
 GameObject:
   m_ObjectHideFlags: 0

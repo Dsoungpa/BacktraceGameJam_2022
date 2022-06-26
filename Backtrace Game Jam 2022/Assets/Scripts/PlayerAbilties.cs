@@ -7,6 +7,8 @@ public class PlayerAbilties : MonoBehaviour
     [SerializeField] private bool offCooldown;
     [SerializeField] private float cooldownTimer;
     [SerializeField] private GameObject emergencyBlock;
+    [SerializeField] private HealthBarScript healthBar;
+    [SerializeField] private float damageAmount = 20f;
 
     // Start is called before the first frame update
     void Start()
@@ -19,7 +21,12 @@ public class PlayerAbilties : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.F) && offCooldown){
             UseAbility();
-            Cooldown();
+            StartCoroutine(Cooldown());
+
+            float currHealth = healthBar.currentHealth;
+            currHealth -= damageAmount;
+            healthBar.SetHealth(currHealth);
+
         }
     }
 

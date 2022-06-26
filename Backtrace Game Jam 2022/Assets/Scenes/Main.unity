@@ -1973,6 +1973,8 @@ MonoBehaviour:
   offCooldown: 0
   cooldownTimer: 5
   emergencyBlock: {fileID: 7685874032471200940, guid: ac17b94423e1c5b4ba0543ac52d26b38, type: 3}
+  healthBar: {fileID: 1394801721}
+  damageAmount: 20
 --- !u!1 &1028034577
 GameObject:
   m_ObjectHideFlags: 0

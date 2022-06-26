@@ -115,8 +115,9 @@ public class PlayerMovement : MonoBehaviour
         rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
         Anims.animator.SetBool("IsJumping",true);
 
-        currentHealth -= jumpStaminaDecrement;
-        healthBar.SetHealth(currentHealth);
+        float currHealth = healthBar.currentHealth;
+        currHealth -= jumpStaminaDecrement;
+        healthBar.SetHealth(currHealth);
     }
 
     private void ApplyGroundLinearDrag() {
@@ -162,8 +163,9 @@ public class PlayerMovement : MonoBehaviour
     IEnumerator TakeHealthConstantly(){
         while(true){
             yield return new WaitForSeconds(1f);
-            currentHealth -= staminaOverTime;
-            healthBar.SetHealth(currentHealth);
+            float currHealth = healthBar.currentHealth;
+            currHealth -= staminaOverTime;
+            healthBar.SetHealth(currHealth);
         }
         
 

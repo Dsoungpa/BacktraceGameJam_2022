@@ -12,6 +12,7 @@ public class RocyPlatformBreak : MonoBehaviour
 
     void Awake() {
         rb = GetComponent<Rigidbody2D>();
+        rb.isKinematic = true;
         animator = GetComponent<Animator>();
     }
 
@@ -30,6 +31,7 @@ public class RocyPlatformBreak : MonoBehaviour
 
     public void blockFall() {
         print("BLOCK FALL");
+        rb.isKinematic = false;
         rb.constraints = ~(RigidbodyConstraints2D.FreezePositionY);
     }
 }

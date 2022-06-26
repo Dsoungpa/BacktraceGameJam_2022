@@ -6,6 +6,8 @@ public class PlatformGeneration : MonoBehaviour
 
 {
     [SerializeField] private GameObject regularPlatform;
+    [SerializeField] private GameObject icyPlatform;
+    [SerializeField] private GameObject rockyPlatform;
     [SerializeField] private GameObject warden;
     [SerializeField] private Transform newPlatformSpawnTrigger;
     [SerializeField] private float newPlatformSpawnTriggerShift = 8.2f;

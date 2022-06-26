@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    public int maxHealth = 100;
+    public int currentHealth;
+
+    public HealthBarScript healthBar;
+
     private Rigidbody2D rb;
     private BoxCollider2D boxCollider2d;
 
@@ -37,6 +42,11 @@ public class PlayerMovement : MonoBehaviour
     //referencetoanimations
     public PlayerAnimations Anims;
 
+    void Start(){
+        currentHealth = maxHealth;
+        healthBar.SetMaxHealth(maxHealth);
+        StartCoroutine(TakeHealthConstantly());
+    }
 
     // Start is called before the first frame update
     void Awake()
@@ -49,6 +59,11 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(Input.GetKeyDown(KeyCode.Space)){
+            currentHealth -= 20;
+            healthBar.SetHealth(currentHealth);
+        }
+
         float horizontalInput = Input.GetAxisRaw("Horizontal");
         
         movementForce = new Vector2(horizontalInput, 0);
@@ -141,5 +156,15 @@ public class PlayerMovement : MonoBehaviour
         }else if (rb.velocity.y > 0 && !Input.GetButton("Jump")) {
             rb.velocity += Vector2.up * Physics2D.gravity.y * (lowJumpMultiplier - 1) * Time.deltaTime;
         }
+    }
+
+    IEnumerator TakeHealthConstantly(){
+        while(true){
+            yield return new WaitForSeconds(1f);
+            currentHealth -= 1;
+            healthBar.SetHealth(currentHealth);
+        }
+        
+
     }
 }

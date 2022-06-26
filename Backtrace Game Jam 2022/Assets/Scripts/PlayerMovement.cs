@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public int maxHealth = 100;
-    public int currentHealth;
-
     public HealthBarScript healthBar;
 
     private Rigidbody2D rb;
@@ -39,14 +36,14 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float extraJumpsCounter;
     private bool jumpRequest = false;
 
+    [Header("Stamina")]
+    public float maxHealth = 100;
+    public float currentHealth;
+    [SerializeField] private float jumpStaminaDecrement = 1f;
+    [SerializeField] private float staminaOverTime = 1f;
+
     //referencetoanimations
     public PlayerAnimations Anims;
-
-    void Start(){
-        currentHealth = maxHealth;
-        healthBar.SetMaxHealth(maxHealth);
-        StartCoroutine(TakeHealthConstantly());
-    }
 
     // Start is called before the first frame update
     void Awake()
@@ -56,14 +53,15 @@ public class PlayerMovement : MonoBehaviour
         boxCastReference = boxCastObject.GetComponent<Renderer>();
     }
 
+    void Start(){
+        currentHealth = maxHealth;
+        healthBar.SetMaxHealth(maxHealth);
+        StartCoroutine(TakeHealthConstantly());
+    }
+
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space)){
-            currentHealth -= 20;
-            healthBar.SetHealth(currentHealth);
-        }
-
         float horizontalInput = Input.GetAxisRaw("Horizontal");
         
         movementForce = new Vector2(horizontalInput, 0);
@@ -116,6 +114,9 @@ public class PlayerMovement : MonoBehaviour
         rb.velocity = new Vector2(rb.velocity.x, 0);
         rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
         Anims.animator.SetBool("IsJumping",true);
+
+        currentHealth -= jumpStaminaDecrement;
+        healthBar.SetHealth(currentHealth);
     }
 
     private void ApplyGroundLinearDrag() {
@@ -161,7 +162,7 @@ public class PlayerMovement : MonoBehaviour
     IEnumerator TakeHealthConstantly(){
         while(true){
             yield return new WaitForSeconds(1f);
-            currentHealth -= 1;
+            currentHealth -= staminaOverTime;
             healthBar.SetHealth(currentHealth);
         }
         

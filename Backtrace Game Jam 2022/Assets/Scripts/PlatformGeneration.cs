@@ -5,14 +5,17 @@ using UnityEngine;
 public class PlatformGeneration : MonoBehaviour
 
 {
-    [SerializeField] private GameObject regularPlatform;
+    [SerializeField] private GameObject regPlat;
     [SerializeField] private GameObject icyPlatform;
     [SerializeField] private GameObject rockyPlatform;
     [SerializeField] private GameObject warden;
     [SerializeField] private Transform newPlatformSpawnTrigger;
     [SerializeField] private float newPlatformSpawnTriggerShift = 8.2f;
     [SerializeField] private float wardenSpawnDelay = 50f;
-    public float wardenChaseSpeed = 5f;
+    [SerializeField] private float icyPlatformIntro = 200f;
+    [SerializeField] private float rockyPlatformIntro = 500f;
+    [SerializeField] private PlayerScore playerScoreScript;
+    private bool allPlatformTypesIntroduced = true;
 
     private int[] spawnPositions = new int[] {-1, 0, 1}; // -1 = left, 0 = center, 1 = right
 
@@ -23,10 +26,14 @@ public class PlatformGeneration : MonoBehaviour
     private Vector2 previousPlatformPosition = new Vector2(0, 0);
     private Vector2 newPlatform;
     private GameObject wardenInstance;
+    private GameObject[] platformStorage;
+
     // Start is called before the first frame update
     void Awake()
     {
+        //playerScoreScript
         wardenInstance = GameObject.FindWithTag("Warden");
+        platformStorage = new GameObject[] {regPlat, regPlat, regPlat, regPlat, regPlat, regPlat, regPlat, regPlat};
 
         SpawnPlatform();
         SpawnPlatformSets(5);
@@ -35,13 +42,30 @@ public class PlatformGeneration : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (previousPlatformPosition.y - newPlatformSpawnTrigger.position.y < newPlatformSpawnTriggerShift) { //LOOK INTO THIS
+        if (allPlatformTypesIntroduced) {
+            AddNewPlatformTypes();
+        }
+
+        if (previousPlatformPosition.y - newPlatformSpawnTrigger.position.y < newPlatformSpawnTriggerShift) {
             SpawnPlatformSets(10);
         }
 
         if (wardenInstance == null){
             SpawnWarden();
             wardenInstance = GameObject.FindWithTag("Warden");
+        }
+    }
+
+    private void AddNewPlatformTypes() {
+        if (playerScoreScript.CurrentScore > icyPlatformIntro) {
+            platformStorage[2] = icyPlatform;
+            platformStorage[3] = icyPlatform;
+        }
+
+        if (playerScoreScript.CurrentScore > rockyPlatformIntro) {
+            platformStorage[4] = rockyPlatform;
+            platformStorage[5] = rockyPlatform;
+            allPlatformTypesIntroduced = false;
         }
     }
 
@@ -53,7 +77,7 @@ public class PlatformGeneration : MonoBehaviour
 
     private void SpawnPlatform() {
         Vector2 newPlatform = CalculatePosition(previousPlatformPosition);
-        Instantiate(regularPlatform, newPlatform, Quaternion.identity);
+        Instantiate(ChoosePlatformTypes(), newPlatform, Quaternion.identity);
         previousPlatformPosition = newPlatform;
     }
 
@@ -61,6 +85,12 @@ public class PlatformGeneration : MonoBehaviour
         for (int i = 0; i < platformLimit; i++) {
             SpawnPlatform();
         }
+    }
+
+    private GameObject ChoosePlatformTypes() {
+        GameObject chosenPlatformType = platformStorage[Random.Range(0, platformStorage.Length - 1)];
+
+        return chosenPlatformType;
     }
 
     private Vector2 CalculatePosition(Vector2 previousPlatform) {

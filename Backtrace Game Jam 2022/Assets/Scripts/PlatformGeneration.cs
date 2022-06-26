@@ -3,10 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlatformGeneration : MonoBehaviour
+
 {
     [SerializeField] private GameObject regularPlatform;
+    [SerializeField] private GameObject warden;
     [SerializeField] private Transform newPlatformSpawnTrigger;
     [SerializeField] private float newPlatformSpawnTriggerShift = 8.2f;
+    [SerializeField] private float wardenSpawnDelay = 50f;
+    public float wardenChaseSpeed = 5f;
 
     private int[] spawnPositions = new int[] {-1, 0, 1}; // -1 = left, 0 = center, 1 = right
 
@@ -16,9 +20,12 @@ public class PlatformGeneration : MonoBehaviour
 
     private Vector2 previousPlatformPosition = new Vector2(0, 0);
     private Vector2 newPlatform;
+    private GameObject wardenInstance;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
+        wardenInstance = GameObject.FindWithTag("Warden");
+
         SpawnPlatform();
         SpawnPlatformSets(5);
     }
@@ -28,6 +35,17 @@ public class PlatformGeneration : MonoBehaviour
     {
         if (previousPlatformPosition.y - newPlatformSpawnTrigger.position.y < newPlatformSpawnTriggerShift) { //LOOK INTO THIS
             SpawnPlatformSets(10);
+        }
+
+        if (wardenInstance == null){
+            SpawnWarden();
+            wardenInstance = GameObject.FindWithTag("Warden");
+        }
+    }
+
+    private void SpawnWarden() {
+        if (newPlatformSpawnTrigger.position.y > wardenSpawnDelay) {
+            Instantiate(warden, Vector2.zero, Quaternion.identity);
         }
     }
 

@@ -26,8 +26,6 @@ public class PlayerScore : MonoBehaviour
         HighScore = 0;
     }
 
-    
-
     // Update is called once per frame
     void Update()
     {
@@ -37,7 +35,6 @@ public class PlayerScore : MonoBehaviour
             Score.text = "Score: " + HighScore.ToString("F0");
         }
     }
-
 
     public void SubmitScore()
     {
@@ -51,7 +48,7 @@ public class PlayerScore : MonoBehaviour
         yield return new WaitForSecondsRealtime(1f);
         int realscore = (int)HighScore;
         yield return SubmitScoreRoutine(realscore);
-        Time.timeScale = 1f;
+        // Time.timeScale = 1f;
     }
 
 
@@ -78,8 +75,8 @@ public class PlayerScore : MonoBehaviour
         LootLockerSDKManager.GetScoreList(leaderboardID, 10, 0, (response) =>
         {
             if(response.success){
-                string tempPlayerNames = "Names\n";
-                string tempPlayerScores = "Scores\n";
+                string tempPlayerNames = "Names\n\n";
+                string tempPlayerScores = "Scores\n\n";
 
                 LootLockerLeaderboardMember [] members = response.items;
 

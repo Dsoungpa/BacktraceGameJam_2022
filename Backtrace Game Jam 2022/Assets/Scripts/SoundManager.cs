@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class SoundManager : MonoBehaviour
 {
+    public AudioSource jump;
+    public AudioSource landing;
     // Start is called before the first frame update
     void Start()
     {
@@ -14,5 +16,13 @@ public class SoundManager : MonoBehaviour
     void Update()
     {
         
+    }
+
+    void JumpSound(){
+        jump.Play();
+    }
+
+    void LandingSound(){
+        landing.Play();
     }
 }

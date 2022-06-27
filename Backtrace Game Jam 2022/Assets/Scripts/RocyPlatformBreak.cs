@@ -7,6 +7,10 @@ public class RocyPlatformBreak : MonoBehaviour
     public float waitBeforeFall = 2f;
     private Rigidbody2D rb;
     private Animator animator;
+    private bool temp = true;
+
+    //audio
+    public AudioSource rockfall;
     void Awake() {
         rb = GetComponent<Rigidbody2D>();
         rb.isKinematic = true;
@@ -20,7 +24,15 @@ public class RocyPlatformBreak : MonoBehaviour
     public IEnumerator BreakBlock() {
         yield return new WaitForSeconds(waitBeforeRumble);
         animator.SetBool("rumbleStart", true);
+
+        if(temp){
+            rockfall.Play();
+            temp = false;
+        }
+        
+
         yield return new WaitForSeconds(waitBeforeFall);
+
         blockFall();
     }
     public void blockFall() {

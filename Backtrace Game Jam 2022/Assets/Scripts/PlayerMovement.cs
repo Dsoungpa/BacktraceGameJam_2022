@@ -44,6 +44,11 @@ public class PlayerMovement : MonoBehaviour
     //referencetoanimations
     public PlayerAnimations Anims;
     // Start is called before the first frame update
+
+    //collectible audio
+    public AudioSource Pickup;
+    public AudioSource jump;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -115,10 +120,11 @@ public class PlayerMovement : MonoBehaviour
             offCooldown = false;
             doubleJumpIcon.fillAmount = 1;
         }
-
+        Anims.animator.SetBool("IsJumping",true);
+        jump.Play();
         rb.velocity = new Vector2(rb.velocity.x, 0);
         rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
-        Anims.animator.SetBool("IsJumping",true);
+        
         healthBar.currentHealth -= jumpStaminaDecrement;
     }
     private void ApplyGroundLinearDrag() {
@@ -162,4 +168,11 @@ public class PlayerMovement : MonoBehaviour
             healthBar.SetHealth(currHealth);
         }
     }
+
+    void OnTriggerEnter2D(Collider2D collision){
+        if(collision.gameObject.tag == "Collectible"){
+            Pickup.Play();
+        }
+    }
+
 }

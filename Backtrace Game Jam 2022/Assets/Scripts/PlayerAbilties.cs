@@ -14,6 +14,8 @@ public class PlayerAbilties : MonoBehaviour
     [Header("Emergency Block Cooldown")]
     [SerializeField] private Image emergencyBlockIcon;
 
+    //audio queue
+    public AudioSource spawnplatform;
     // Start is called before the first frame update
     void Start()
     {
@@ -42,7 +44,7 @@ public class PlayerAbilties : MonoBehaviour
     void UseAbility() {
         Vector2 emergencyBlockPosition = new Vector2(transform.position.x, transform.position.y - 3);
         Instantiate(emergencyBlock, emergencyBlockPosition, Quaternion.identity);
-
+        spawnplatform.Play();
         offCooldown = false;
         emergencyBlockIcon.fillAmount = 1;
     }

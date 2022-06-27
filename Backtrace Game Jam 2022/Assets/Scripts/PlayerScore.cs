@@ -38,7 +38,6 @@ public class PlayerScore : MonoBehaviour
 
     public void SubmitScore()
     {
-        print("submit");
         StartCoroutine(DeathRoutine());
     }
 
@@ -48,6 +47,7 @@ public class PlayerScore : MonoBehaviour
         yield return new WaitForSecondsRealtime(1f);
         int realscore = (int)HighScore;
         yield return SubmitScoreRoutine(realscore);
+        yield return FetchTopHighscoresRoutine();
         // Time.timeScale = 1f;
     }
 

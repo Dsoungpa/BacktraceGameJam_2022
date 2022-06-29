@@ -5,48 +5,49 @@ using UnityEngine.UI;
 using TMPro;
 public class PlayerAbilties : MonoBehaviour
 {
+    [Header("References")]
+    [SerializeField] private HealthBarScript healthBarScript;
     [SerializeField] private GameObject emergencyBlock;
-    [SerializeField] private bool offCooldown;
-    public float cooldownTimer = 5f;
-    [SerializeField] private HealthBarScript healthBar;
-    [SerializeField] private float damageAmount = 20f;
-
-    [Header("Emergency Block Cooldown")]
+    [SerializeField] private AudioSource spawnPlatformAudio;
+    
+    [Header("Abilities")]
+    // ability 1 = Emergency Block
     [SerializeField] private Image emergencyBlockIcon;
+    [SerializeField] private float ability1Cost = 25f;
+    [SerializeField] private float spawnOffset = 1.5f;
+    
+    private bool offCooldown1;
+    public float cooldown1 = 5f;
 
-    //audio queue
-    public AudioSource spawnplatform;
-    // Start is called before the first frame update
     void Start()
     {
-        offCooldown = true;
-
+        offCooldown1 = true;
         emergencyBlockIcon.fillAmount = 0;
     }
-    // Update is called once per frame
+    
+
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F) && offCooldown){
-            UseAbility();
-            float currHealth = healthBar.currentHealth;
-            currHealth -= damageAmount;
-            healthBar.SetHealth(currHealth);
+        if (Input.GetKeyDown(KeyCode.F) && offCooldown1){
+            UseAbilityEmergency();
+            healthBarScript.currentHealth -= ability1Cost;
         }
 
-        if (offCooldown == false) {
-            emergencyBlockIcon.fillAmount -= 1 / cooldownTimer * Time.deltaTime;
+        if (offCooldown1 == false) {
+            emergencyBlockIcon.fillAmount -= 1 / cooldown1 * Time.deltaTime;
             if (emergencyBlockIcon.fillAmount <= 0) {
                 emergencyBlockIcon.fillAmount = 0;
-                offCooldown = true;
+                offCooldown1 = true;
             }
         }
     }
-    void UseAbility() {
-        Vector2 emergencyBlockPosition = new Vector2(transform.position.x, transform.position.y - 3);
-        Instantiate(emergencyBlock, emergencyBlockPosition, Quaternion.identity);
-        spawnplatform.Play();
-        offCooldown = false;
-        emergencyBlockIcon.fillAmount = 1;
-    }
 
+    void UseAbilityEmergency() {
+        Vector2 emergencyBlockPosition = new Vector2(transform.position.x, transform.position.y - spawnOffset);
+        Instantiate(emergencyBlock, emergencyBlockPosition, Quaternion.identity);
+        offCooldown1 = false;
+        emergencyBlockIcon.fillAmount = 1;
+
+        spawnPlatformAudio.Play();
+    }
 }

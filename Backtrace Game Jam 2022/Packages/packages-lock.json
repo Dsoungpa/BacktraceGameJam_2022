@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "com.lootlocker.lootlockersdk": {
-      "version": "file:E:/Unity/2022_GameJams/unity-sdk-main",
+      "version": "file:G:/lootlocker/unity-sdk-main/unity-sdk-main",
       "depth": 0,
       "source": "local",
       "dependencies": {

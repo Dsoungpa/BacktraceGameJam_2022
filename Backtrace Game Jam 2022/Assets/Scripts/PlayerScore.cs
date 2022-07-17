@@ -13,7 +13,7 @@ public class PlayerScore : MonoBehaviour
     public GameObject player;
 
     public float CurrentScore;
-    [SerializeField] private float HighScore;
+    [SerializeField] public float HighScore;
 
     int leaderboardID = 3999;
     public TMP_Text playerNames;
@@ -72,7 +72,7 @@ public class PlayerScore : MonoBehaviour
 
     public IEnumerator FetchTopHighscoresRoutine(){
         bool done = false;
-        LootLockerSDKManager.GetScoreList(leaderboardID, 10, 0, (response) =>
+        LootLockerSDKManager.GetScoreList(leaderboardID, 20, 0, (response) =>
         {
             if(response.success){
                 string tempPlayerNames = "Names\n\n";

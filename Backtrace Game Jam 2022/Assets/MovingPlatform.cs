@@ -27,7 +27,7 @@ public class MovingPlatform : MonoBehaviour
         // print("Going Left: " + goingLeft);
 
         if(goingRight){
-            print("In here");
+            //print("In here");
             transform.position = Vector2.MoveTowards(transform.position, target2, step);
         }
 

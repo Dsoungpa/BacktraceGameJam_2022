@@ -9,7 +9,7 @@ public class Leaderboard : MonoBehaviour
     [SerializeField] private TMP_Text playerNames;
     [SerializeField] private TMP_Text playerScores;
     [SerializeField] private int leaderboardID = 3999;
-    [SerializeField] private int leaderboardAmount = 10;
+    [SerializeField] private int leaderboardAmount = 20;
 
     void Start() {
         StartCoroutine(SetupRoutine());
